@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="20dp"
+    android:elevation="15dp"
+    android:background="#fcf7bb"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/imageKos"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"></ImageView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Booking Detail : ">
+    </TextView>
+    <TextView
+        android:layout_marginHorizontal="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bookingId"
+        android:textSize="16sp"
+        android:text="Booking ID : ">
+    </TextView>
+    <TextView
+        android:layout_marginHorizontal="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/userID"
+        android:textSize="16sp"
+        android:text="User ID : ">
+    </TextView>
+    <TextView
+        android:layout_marginHorizontal="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bookingDate"
+        android:textSize="16sp"
+        android:text="Booking Date : ">
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Kos Detail : ">
+    </TextView>
+    <TextView
+        android:layout_marginHorizontal="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/namaKos"
+        android:textSize="16sp"
+        android:text="Name : ">
+    </TextView>
+    <TextView
+        android:layout_marginHorizontal="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/priceKos"
+        android:textSize="16sp"
+        android:text="Price : ">
+    </TextView>
+    <TextView
+        android:layout_marginHorizontal="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/facilityKos"
+        android:textSize="16sp"
+        android:text="Facility : "
+        android:layout_marginBottom="10dp">
+    </TextView>
+
+
+</LinearLayout>

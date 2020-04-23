@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#f6d186"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            style="@style/text"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="30sp"
+            android:text="Register Page" />
+
+        <EditText
+            android:id="@+id/etRegisterUsername"
+            style="@style/editText"
+            android:hint="Username"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <EditText
+            android:id="@+id/etRegisterPassword"
+            style="@style/editText"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <EditText
+            android:id="@+id/etRegisterConfirmPassword"
+            style="@style/editText"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <EditText
+            android:id="@+id/etPhoneNumber"
+            style="@style/editText"
+            android:hint="Phone Number"
+            android:inputType="number"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+        <TextView
+            android:text="Gender"
+            style="@style/text"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+        </TextView>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+            <RadioButton
+                android:id="@+id/radioMen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text"
+                android:text="Men">
+            </RadioButton>
+            <RadioButton
+                style="@style/text"
+                android:id="@+id/radioWomen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Women"></RadioButton>
+        </RadioGroup>
+        <TextView
+            style="@style/text"
+            android:textStyle="bold"
+            android:text="Date Of Birth"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+        </TextView>
+        <DatePicker
+            android:id="@+id/datePickerBirth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+        </DatePicker>
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/text"
+            android:text="Check For the Agreement of the terms"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"></CheckBox>
+        <Button
+            android:id="@+id/btnRegisterPeople"
+            style="@style/button"
+            android:text="Register"
+            android:layout_gravity="right"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginBottom="20dp">
+        </Button>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f6d186"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tvLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:layout_marginBottom="30dp"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        style="@style/text"
+        android:text="Login Page" />
+    <EditText
+        android:id="@+id/etUsername"
+        style="@style/editText"
+        android:layout_below="@id/tvLogin"
+        android:hint="Username"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
+    <EditText
+        android:id="@+id/etPassword"
+        style="@style/editText"
+        android:layout_below="@id/etUsername"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
+    <Button
+        android:id="@+id/btRegister"
+        android:text="Register"
+        android:layout_below="@id/etPassword"
+        android:layout_toLeftOf="@+id/btLogin"
+        android:layout_marginHorizontal="15dp"
+        style="@style/button"></Button>
+    <Button
+        android:id="@+id/btLogin"
+        android:text="Login"
+        android:layout_below="@id/etPassword"
+        android:layout_alignRight="@id/etPassword"
+        style="@style/button"></Button>
+
+
+</RelativeLayout>

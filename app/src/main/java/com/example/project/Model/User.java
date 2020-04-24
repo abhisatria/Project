@@ -17,6 +17,15 @@ public class User {
         this.userID = userID;
     }
 
+    public User() {
+         String username;
+         String password;
+         String phoneNumber;
+         String gender;
+         String dateOfBirth;
+         String userID;
+    }
+
     public String getUsername() {
         return username;
     }

@@ -27,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
+        //test doang
         Intent intent = new Intent(MainActivity.this,ListActivity.class);
-        startActivity(intent);
+        startActivity(intent); //sampe sini test
 
         etPassword = findViewById(R.id.etPassword);
         etUsername = findViewById(R.id.etUsername);

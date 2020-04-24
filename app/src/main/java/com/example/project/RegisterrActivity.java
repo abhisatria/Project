@@ -2,8 +2,13 @@ package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,6 +25,9 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class RegisterrActivity extends AppCompatActivity {
+
+    PendingIntent sentPI,deliveredPI;
+    BroadcastReceiver smsSentReceiver,smsDeliveredReceiver;
     private static final Pattern USERNAME_PATTERN =
             Pattern.compile("^"+
                     "(?=.*[0-9])"+
@@ -43,6 +51,9 @@ public class RegisterrActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registerr);
         getSupportActionBar().hide();
+
+        sentPI = PendingIntent.getBroadcast(this,0,new Intent("SMS_SENT"),0);
+        deliveredPI = PendingIntent.getBroadcast(this,0,new Intent("SMS_DELIVERED"),0);
 
         etUsername = findViewById(R.id.etRegisterUsername);
         etConfirmPassword = findViewById(R.id.etRegisterConfirmPassword);
@@ -150,10 +161,56 @@ public class RegisterrActivity extends AppCompatActivity {
         }
         dateOfBirth = ""+datePicker.getDayOfMonth()+"/"+(datePicker.getMonth()+1)+"/"+datePicker.getYear();
         UserStorage.count++;
+        UserDBAdapter userDBAdapter = new UserDBAdapter(getApplicationContext(),null,null,1);
         String userID = "US"+UserStorage.count/100+UserStorage.count/10+UserStorage.count%10;
         User u =new User(username,password,number,gender,dateOfBirth,userID);
+        userDBAdapter.onOpen();
+        userDBAdapter.insertUser(u);
+        userDBAdapter.close();
         UserStorage.users.add(u);
+        SendSMS(u.getPhoneNumber(),"Register on Bluejack Kos has been Successfull");
 //        Toast.makeText(RegisterrActivity.this,username+"-"+password+"-"+number+"-"+gender+"-"+dateOfBirth+"-"+userID,Toast.LENGTH_LONG).show();
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        smsSentReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (getResultCode()){
+                    case  RESULT_OK:
+                        Toast.makeText(getApplicationContext(),"SMS SENT",Toast.LENGTH_SHORT).show();
+                        break;
+                    case  SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        Toast.makeText(getApplicationContext(),"Generic Failure",Toast.LENGTH_SHORT).show();
+                        break;
+                    case  SmsManager.RESULT_ERROR_NO_SERVICE:
+                        Toast.makeText(getApplicationContext(),"No Service",Toast.LENGTH_SHORT).show();
+                        break;
+                    case  SmsManager.RESULT_ERROR_NULL_PDU:
+                        Toast.makeText(getApplicationContext(),"No PDU",Toast.LENGTH_SHORT).show();
+                        break;
+                    case  SmsManager.RESULT_ERROR_RADIO_OFF:
+                        Toast.makeText(getApplicationContext(),"Radio Off",Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+        registerReceiver(smsSentReceiver,new IntentFilter("SMS_SENT"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(smsSentReceiver);
+    }
+
+
+
+    private void SendSMS(String phoneNumber, String s) {
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber,null,s,sentPI,deliveredPI);
     }
 }

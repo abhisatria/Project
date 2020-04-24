@@ -3,6 +3,8 @@ package com.example.project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.project.Model.User;
 import com.example.project.Storage.BoardingStorage;
 import com.example.project.Storage.UserLoginStorage;
 import com.example.project.Storage.UserStorage;
@@ -21,15 +24,32 @@ public class MainActivity extends AppCompatActivity {
     Button btnLogin,btnRegister;
     EditText etUsername,etPassword;
     TextView test;
+    SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
+
+        UserDBAdapter userDBAdapter = new UserDBAdapter(this,null,null,1);
+        SQLiteDatabase obj = userDBAdapter.getReadableDatabase();
+        if(obj!=null)
+        {
+            UserStorage.users.addAll(userDBAdapter.allUsers());
+        }
+//        if(userDBAdapter.getUsersCount()>0)
+//        {
+//            UserStorage.users.addAll(userDBAdapter.allUsers());
+//        }
+
+//        Cursor cursor = userDBAdapter.getAllUsers();
+//        cursor.moveToFirst();
+
+//        Toast.makeText(getApplicationContext(),cursor.getString(0),Toast.LENGTH_SHORT).show();
         //test doang
-        Intent intent = new Intent(MainActivity.this,ListActivity.class);
-        startActivity(intent); //sampe sini test
+//        Intent intent = new Intent(MainActivity.this,ListActivity.class);
+//        startActivity(intent); //sampe sini test
 
         etPassword = findViewById(R.id.etPassword);
         etUsername = findViewById(R.id.etUsername);
@@ -58,6 +78,30 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
+
+//                Cursor cursor = db.rawQuery("SELECT * FROM users",null);
+//                if(cursor.moveToFirst()){
+//                    while(!cursor.isAfterLast()){
+//                        if(inputUsername.equals(cursor.getString(1)))
+//                        {
+//                            if(!inputPassword.equals(cursor.getString(2)))
+//                            {
+//                                Toast.makeText(MainActivity.this, "Username and Password doesn't match", Toast.LENGTH_SHORT).show();
+//                                break;
+//                            }
+//                            else {
+////                                BoardingStorage.boardings.clear();
+//                                UserLoginStorage.userID = cursor.getString(0);
+//                                Intent intent = new Intent(MainActivity.this,ListActivity.class);
+//                                intent.putExtra("UserID",cursor.getString(0));
+//                                startActivity(intent);
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    Toast.makeText(MainActivity.this, "Username doesn't exist", Toast.LENGTH_SHORT).show();
+//                }
+                ///
                 for(int i=0;i<UserStorage.users.size();i++)
                 {
                     if(inputUsername.equals(UserStorage.users.get(i).getUsername()))
@@ -80,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Username doesn't exist", Toast.LENGTH_SHORT).show();
                         break;
                     }
+                }
+                if(UserStorage.users.size()==0)
+                {
+                    Toast.makeText(MainActivity.this, "Username doesn't exist", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

@@ -1,12 +1,17 @@
 package com.example.project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -27,7 +32,9 @@ import java.util.regex.Pattern;
 public class RegisterrActivity extends AppCompatActivity {
 
     PendingIntent sentPI,deliveredPI;
+    String phoneNumber;
     BroadcastReceiver smsSentReceiver,smsDeliveredReceiver;
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
     private static final Pattern USERNAME_PATTERN =
             Pattern.compile("^"+
                     "(?=.*[0-9])"+
@@ -64,16 +71,42 @@ public class RegisterrActivity extends AppCompatActivity {
         datePicker = findViewById(R.id.datePickerBirth);
         checkBoxAgreement = findViewById(R.id.checkbox);
         radioWomen = findViewById(R.id.radioWomen);
+
+        checkPermission();
+
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validate())
                 {
+                    SendSMS(phoneNumber,"Register on Bluejack Kos has been Successfull");
                     Intent intent = new Intent(RegisterrActivity.this,MainActivity.class);
                     startActivity(intent);
                 }
             }
         });
+    }
+    public void checkPermission(){
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED){
+
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.SEND_SMS))
+            {
+
+            }
+            else
+            {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS},MY_PERMISSIONS_REQUEST_SEND_SMS);
+            }
+        }
+//        int permissionCheck = ContextCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS);
+//
+//        if(permissionCheck == PackageManager.PERMISSION_GRANTED){
+//            SendSMS(phoneNumber,"Register on Bluejack Kos has been Successfull");
+//        }
+//        else{
+//            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},0);
+//
+//        }
     }
 
     public boolean validate()
@@ -168,9 +201,27 @@ public class RegisterrActivity extends AppCompatActivity {
         userDBAdapter.insertUser(u);
         userDBAdapter.close();
         UserStorage.users.add(u);
-        SendSMS(u.getPhoneNumber(),"Register on Bluejack Kos has been Successfull");
+        phoneNumber = u.getPhoneNumber();
+//
+
+
 //        Toast.makeText(RegisterrActivity.this,username+"-"+password+"-"+number+"-"+gender+"-"+dateOfBirth+"-"+userID,Toast.LENGTH_LONG).show();
         return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        switch (requestCode){
+            case MY_PERMISSIONS_REQUEST_SEND_SMS:{
+                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+//                    SendSMS(phoneNumber,"Register on Bluejack Kos has been Successfull");
+                }else{
+                    Toast.makeText(this,"You don't have required permission to make this action",Toast.LENGTH_SHORT).show();
+                }
+            }
+            return;
+        }
     }
 
     @Override
@@ -198,19 +249,35 @@ public class RegisterrActivity extends AppCompatActivity {
                 }
             }
         };
+
+        smsDeliveredReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (getResultCode()){
+                    case RESULT_OK :
+                        Toast.makeText(getApplicationContext(),"SMS Delivered",Toast.LENGTH_SHORT).show();
+                        break;
+                    case RESULT_CANCELED :
+                        Toast.makeText(getApplicationContext(),"SMS Not Delivered",Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
         registerReceiver(smsSentReceiver,new IntentFilter("SMS_SENT"));
+        registerReceiver(smsDeliveredReceiver,new IntentFilter("SMS_DELIVERED"));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(smsSentReceiver);
+        unregisterReceiver(smsDeliveredReceiver);
     }
 
 
 
     private void SendSMS(String phoneNumber, String s) {
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber,null,s,sentPI,deliveredPI);
+        sms.sendTextMessage(phoneNumber,null,s,null,null);
     }
 }

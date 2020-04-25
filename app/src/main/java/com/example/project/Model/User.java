@@ -18,12 +18,12 @@ public class User {
     }
 
     public User() {
-         String username;
-         String password;
-         String phoneNumber;
-         String gender;
-         String dateOfBirth;
-         String userID;
+//         String username;
+//         String password;
+//         String phoneNumber;
+//         String gender;
+//         String dateOfBirth;
+//         String userID;
     }
 
     public String getUsername() {

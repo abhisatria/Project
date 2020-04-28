@@ -27,7 +27,7 @@ import java.util.Calendar;
 public class DetailActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     ImageView imgKos;
     TextView tvName,tvFacility,tvPrice,tvDescription,tvLatitude,tvLongitude,tvBook;
-    Button buttonBook;
+    Button buttonBook,buttonLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,10 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
         tvLatitude = findViewById(R.id.tvLatitude);
         tvLongitude = findViewById(R.id.tvLongitude);
         buttonBook = findViewById(R.id.btBook);
+        buttonLocation = findViewById(R.id.btMap);
         tvBook = findViewById(R.id.tvBook);
         getSupportActionBar().hide();
+        final Double latitude,longitude;
 
 
         tvName.setText(getIntent().getStringExtra("nama"));
@@ -51,10 +53,23 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
         tvPrice.setText(getIntent().getStringExtra("harga"));
         tvDescription.setText(getIntent().getStringExtra("deskripsi"));
         tvLatitude.setText(getIntent().getStringExtra("latitude"));
+        latitude = Double.parseDouble(getIntent().getStringExtra("latitude"));
+        longitude = Double.parseDouble(getIntent().getStringExtra("longitude"));
         tvLongitude.setText(getIntent().getStringExtra("longitude"));
         Picasso.get().load(getIntent().getStringExtra("gambar")).into(imgKos);
 
-
+        buttonLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MapFormActivity.class);
+                Bundle extras = new Bundle();
+                extras.putDouble("latitude",latitude);
+                extras.putDouble("longitude",longitude);
+                extras.putString("title",getIntent().getStringExtra("nama"));
+                intent.putExtras(extras);
+                startActivity(intent);
+            }
+        });
         buttonBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

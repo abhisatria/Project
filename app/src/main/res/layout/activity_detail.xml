@@ -123,6 +123,16 @@
             android:textSize="14sp"
             android:text=""></TextView>
         <Button
+            android:id="@+id/btMap"
+            style="@style/button"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:text="View Location Kos"></Button>
+        <Button
             android:id="@+id/btBook"
             style="@style/button"
             android:layout_marginVertical="10dp"
@@ -131,6 +141,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="18sp"
-            android:text="BOOK"></Button>
+            android:text="BOOKING KOS"></Button>
     </LinearLayout>
 </ScrollView>

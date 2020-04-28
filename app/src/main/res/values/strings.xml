@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Bluejack Kos</string>
+    <string name="title_activity_map_form">MapFormActivity</string>
 </resources>

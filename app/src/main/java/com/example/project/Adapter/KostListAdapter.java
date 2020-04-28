@@ -55,7 +55,7 @@ public class KostListAdapter extends RecyclerView.Adapter<KostListAdapter.MyView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(holder.itemView.getContext(),boardings.get(holder.getAdapterPosition()).getName(),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(holder.itemView.getContext(),boardings.get(holder.getAdapterPosition()).getName(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
                 Bundle extras = new Bundle();
                 extras.putInt("id",boardings.get(holder.getAdapterPosition()).getId());

@@ -7,11 +7,13 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="text">
         <item name="android:textColor">#FF0000</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="button">
         <item name="android:textColor">#FF3131</item>
         <item name="android:layout_width">wrap_content</item>
@@ -20,6 +22,7 @@
         <item name="android:layout_marginHorizontal">5dp</item>
         <item name="android:layout_marginTop">15dp</item>
     </style>
+
     <style name="editText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -27,5 +30,14 @@
         <item name="android:padding">5dp</item>
         <item name="android:textColorHint">#f19292</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

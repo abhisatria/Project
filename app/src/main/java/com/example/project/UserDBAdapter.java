@@ -127,19 +127,17 @@ public class UserDBAdapter extends SQLiteOpenHelper {
 
         db.insert(TABLE_BOOKS,null,contentValues);
     }
-    public int getLastCount(){
-        String query = "SELECT * FROM " + TABLE_BOOKS;
+    public long getLastCount(){
+        String query = "SELECT * FROM "+ TABLE_BOOKS;
         Cursor cursor = db.rawQuery(query,null);
-        if(cursor==null)
-        {
-            return 0;
+        long id;
+        if(cursor.moveToLast()){
+            cursor.moveToLast();
+            id = cursor.getLong(0);
+            cursor.close();
         }
-        else
-        {
-            if(cursor.moveToLast())
-            return cursor.getInt(0);
-        }
-        return 0;
+        else id = 0;
+        return id;
     }
 
     public User getUser(String userID)
@@ -253,7 +251,7 @@ public class UserDBAdapter extends SQLiteOpenHelper {
         Booking booking = new Booking();
         if(cursor.moveToFirst())
         {
-            booking.setBookingID(cursor.getString(0));
+            booking.setBookingID(cursor.getString(1));
             db.delete(TABLE_BOOKS,COLUMN_BOOK_ID + " = ?",new String[]{booking.getBookingID()});
             cursor.close();
             result = true;

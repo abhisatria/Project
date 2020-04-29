@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.BookTransaction;
+import com.example.project.ListActivity;
 import com.example.project.Model.Booking;
 import com.example.project.R;
+import com.example.project.Storage.BookingStorage;
 import com.example.project.Storage.UserLoginStorage;
 import com.example.project.UserDBAdapter;
 import com.squareup.picasso.Picasso;
@@ -51,6 +54,7 @@ public class BookingTransactionAdapter extends RecyclerView.Adapter<BookingTrans
         holder.tvPriceKos.setText(bookings.get(position).getKosPrice());
         holder.tvBookingDate.setText(bookings.get(position).getBookingDate());
 
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -64,16 +68,21 @@ public class BookingTransactionAdapter extends RecyclerView.Adapter<BookingTrans
                         UserDBAdapter dbAdapter = new UserDBAdapter(v.getContext(),null,null,1);
                         dbAdapter.onOpen();
                         boolean result = dbAdapter.deleteBooking(bookings.get(position).getBookingID());
+                        notifyItemRemoved(position);
                         if(result)
                         {
+                            Intent intent = new Intent(v.getContext(), ListActivity.class);
                             Toast.makeText(v.getContext(), "Your booking has been cancelled", Toast.LENGTH_SHORT).show();
+                            v.getContext().startActivity(intent);
                         }
                         dbAdapter.close();
-                        notifyDataSetChanged();
-                        notifyItemRemoved(position);
+
 
                     }
+
+
                 });
+
                 alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -87,9 +96,6 @@ public class BookingTransactionAdapter extends RecyclerView.Adapter<BookingTrans
         });
     }
 
-    public void restart(){
-
-    }
 
     @Override
     public int getItemCount() {
@@ -110,5 +116,7 @@ public class BookingTransactionAdapter extends RecyclerView.Adapter<BookingTrans
             tvFacilityKos = view.findViewById(R.id.facilityKos);
             imageKos = view.findViewById(R.id.imageKos);
         }
+
     }
+
 }

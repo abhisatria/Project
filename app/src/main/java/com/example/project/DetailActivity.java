@@ -107,12 +107,9 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
 //                BookingStorage.countItem++;
                 UserDBAdapter userDBAdapter = new UserDBAdapter(getApplicationContext(),null,null,1);
                 SQLiteDatabase obj = userDBAdapter.getReadableDatabase();
-                int id_;
-                if(obj==null)
-                {
-                    id_ = 0;
-                }
-                else id_ = userDBAdapter.getLastCount()+1;
+                userDBAdapter.onOpen();
+                long id_=userDBAdapter.getBookingCount();
+                userDBAdapter.close();
                 String bookID = "BK"+id_/100+id_/10+id_%10;
 
 
@@ -124,6 +121,7 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
                         ,getIntent().getStringExtra("latitude")
                         ,getIntent().getStringExtra("longitude")
                         ,getIntent().getStringExtra("gambar"));
+
                 userDBAdapter.onOpen();
                 userDBAdapter.insertBookingTransaction(booking);
                 userDBAdapter.close();
@@ -138,12 +136,10 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
 //            BookingStorage.countItem++;
             UserDBAdapter userDBAdapter = new UserDBAdapter(getApplicationContext(),null,null,1);
             SQLiteDatabase obj = userDBAdapter.getReadableDatabase();
-            int id_;
-            if(obj==null)
-            {
-                id_ = 0;
-            }
-            else id_ = userDBAdapter.getLastCount()+1;
+            userDBAdapter.onOpen();
+            long id_=userDBAdapter.getBookingCount();
+            userDBAdapter.close();
+
             String bookID = "BK"+id_/100+id_/10+id_%10;
 
             Booking booking =new Booking(bookID,userID,getIntent().getStringExtra("nama"),getIntent().getStringExtra("harga"),getIntent().getStringExtra("fasilitas"),currentDateString,getIntent().getStringExtra("deskripsi"),getIntent().getStringExtra("latitude"),getIntent().getStringExtra("longitude"),getIntent().getStringExtra("gambar"));

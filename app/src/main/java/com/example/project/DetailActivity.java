@@ -6,6 +6,7 @@ import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -103,10 +104,30 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
             if(i==BookingStorage.countItem-1)
             {
                 String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-                BookingStorage.countItem++;
-                String bookID = "BK"+BookingStorage.countItem/100+BookingStorage.countItem/10+BookingStorage.countItem%10;
-                BookingStorage.bookings.add(new Booking(bookID,userID,getIntent().getStringExtra("nama"),getIntent().getStringExtra("harga"),getIntent().getStringExtra("fasilitas"),currentDateString,getIntent().getIntExtra("gambar",0)));
+//                BookingStorage.countItem++;
+                UserDBAdapter userDBAdapter = new UserDBAdapter(getApplicationContext(),null,null,1);
+                SQLiteDatabase obj = userDBAdapter.getReadableDatabase();
+                int id_;
+                if(obj==null)
+                {
+                    id_ = 0;
+                }
+                else id_ = userDBAdapter.getLastCount()+1;
+                String bookID = "BK"+id_/100+id_/10+id_%10;
 
+
+                Booking booking =new Booking(bookID,userID,getIntent().getStringExtra("nama")
+                        ,getIntent().getStringExtra("harga")
+                        ,getIntent().getStringExtra("fasilitas")
+                        ,currentDateString
+                        ,getIntent().getStringExtra("deskripsi")
+                        ,getIntent().getStringExtra("latitude")
+                        ,getIntent().getStringExtra("longitude")
+                        ,getIntent().getStringExtra("gambar"));
+                userDBAdapter.onOpen();
+                userDBAdapter.insertBookingTransaction(booking);
+                userDBAdapter.close();
+                BookingStorage.bookings.add(booking);
                 Toast.makeText(this, "Booking Success", Toast.LENGTH_SHORT).show();
                 break;
             }
@@ -114,13 +135,24 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
         if(BookingStorage.countItem==0)
         {
             String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-            BookingStorage.countItem++;
-            String bookID = "BK"+BookingStorage.countItem/100+BookingStorage.countItem/10+BookingStorage.countItem%10;
+//            BookingStorage.countItem++;
+            UserDBAdapter userDBAdapter = new UserDBAdapter(getApplicationContext(),null,null,1);
+            SQLiteDatabase obj = userDBAdapter.getReadableDatabase();
+            int id_;
+            if(obj==null)
+            {
+                id_ = 0;
+            }
+            else id_ = userDBAdapter.getLastCount()+1;
+            String bookID = "BK"+id_/100+id_/10+id_%10;
 
-            BookingStorage.bookings.add(new Booking(bookID,userID,getIntent().getStringExtra("nama"),
-                    getIntent().getStringExtra("harga"),getIntent().getStringExtra("fasilitas"),
-                    currentDateString,getIntent().getIntExtra("gambar",0)));
+            Booking booking =new Booking(bookID,userID,getIntent().getStringExtra("nama"),getIntent().getStringExtra("harga"),getIntent().getStringExtra("fasilitas"),currentDateString,getIntent().getStringExtra("deskripsi"),getIntent().getStringExtra("latitude"),getIntent().getStringExtra("longitude"),getIntent().getStringExtra("gambar"));
 
+            userDBAdapter.onOpen();
+            userDBAdapter.insertBookingTransaction(booking);
+            userDBAdapter.close();
+            BookingStorage.bookings.add(booking);
+//            Toast.makeText(this," "+userDBAdapter.allBookings(),Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "Booking Success", Toast.LENGTH_SHORT).show();
         }
 

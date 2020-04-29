@@ -3,6 +3,7 @@ package com.example.project.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.example.project.BookTransaction;
 import com.example.project.Model.Booking;
 import com.example.project.R;
 import com.example.project.Storage.UserLoginStorage;
+import com.example.project.UserDBAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -39,7 +42,8 @@ public class BookingTransactionAdapter extends RecyclerView.Adapter<BookingTrans
 
     @Override
     public void onBindViewHolder(@NonNull final BookingTransactionAdapter.MyViewHolder holder, final int position) {
-        holder.imageKos.setImageResource(bookings.get(position).getGambarKos());
+        Picasso.get().load(bookings.get(position).getGambarKos()).into(holder.imageKos);
+//        holder.imageKos.setImageResource(bookings.get(position).getGambarKos());
         holder.tvNameKos.setText(bookings.get(position).getKosName());
         holder.tvBookingID.setText(bookings.get(position).getBookingID());
         holder.tvUserID.setText(bookings.get(position).getUserID());
@@ -57,7 +61,17 @@ public class BookingTransactionAdapter extends RecyclerView.Adapter<BookingTrans
                 alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(v.getContext(), "Your booking has been cancelled", Toast.LENGTH_SHORT).show();
+                        UserDBAdapter dbAdapter = new UserDBAdapter(v.getContext(),null,null,1);
+                        dbAdapter.onOpen();
+                        boolean result = dbAdapter.deleteBooking(bookings.get(position).getBookingID());
+                        if(result)
+                        {
+                            Toast.makeText(v.getContext(), "Your booking has been cancelled", Toast.LENGTH_SHORT).show();
+                        }
+                        dbAdapter.close();
+                        notifyDataSetChanged();
+                        notifyItemRemoved(position);
+
                     }
                 });
                 alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -71,6 +85,10 @@ public class BookingTransactionAdapter extends RecyclerView.Adapter<BookingTrans
 
             }
         });
+    }
+
+    public void restart(){
+
     }
 
     @Override

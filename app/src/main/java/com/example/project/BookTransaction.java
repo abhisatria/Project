@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -27,6 +28,15 @@ public class BookTransaction extends AppCompatActivity {
         tvEmpty = findViewById(R.id.tvEmpty);
         recyclerView.setHasFixedSize(true);
 
+        BookingStorage.bookings.clear();
+
+        UserDBAdapter userDBAdapter = new UserDBAdapter(this,null,null,1);
+        SQLiteDatabase obj = userDBAdapter.getReadableDatabase();
+        if(obj!=null)
+        {
+            BookingStorage.bookings.addAll(userDBAdapter.allBookings());
+        }
+        BookingStorage.countItem =  Integer.parseInt(String.valueOf(userDBAdapter.getBookingCount()));
         if(BookingStorage.countItem!=0)
         {
             tvEmpty.setVisibility(View.GONE);

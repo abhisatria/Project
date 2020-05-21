@@ -6,6 +6,7 @@ import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -29,11 +30,17 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
     ImageView imgKos;
     TextView tvName,tvFacility,tvPrice,tvDescription,tvLatitude,tvLongitude,tvBook;
     Button buttonBook,buttonLocation;
+    long count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+
+        SharedPreferences appPref = getSharedPreferences("applicationPref",MODE_PRIVATE);
+        count = appPref.getLong("countID",0);
+
 
         imgKos = findViewById(R.id.gambarKos);
         tvName = findViewById(R.id.tvNameKos);
@@ -108,9 +115,10 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
                 UserDBAdapter userDBAdapter = new UserDBAdapter(getApplicationContext(),null,null,1);
                 SQLiteDatabase obj = userDBAdapter.getReadableDatabase();
                 userDBAdapter.onOpen();
-                long id_=userDBAdapter.getBookingCount();
+                count++;
+//                long id_=userDBAdapter.getBookingCount();
                 userDBAdapter.close();
-                String bookID = "BK"+id_/100+id_/10+id_%10;
+                String bookID = "BK"+count/100+count/10+count%10;
 
 
                 Booking booking =new Booking(bookID,userID,getIntent().getStringExtra("nama")
@@ -126,6 +134,10 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
                 userDBAdapter.insertBookingTransaction(booking);
                 userDBAdapter.close();
                 BookingStorage.bookings.add(booking);
+                SharedPreferences appPref = getSharedPreferences("applicationPref",MODE_PRIVATE);
+                SharedPreferences.Editor editor = appPref.edit();
+                editor.putLong("countID",count);
+                editor.commit();
                 Toast.makeText(this, "Booking Success", Toast.LENGTH_SHORT).show();
                 break;
             }
@@ -133,14 +145,14 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
         if(BookingStorage.countItem==0)
         {
             String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-//            BookingStorage.countItem++;
             UserDBAdapter userDBAdapter = new UserDBAdapter(getApplicationContext(),null,null,1);
             SQLiteDatabase obj = userDBAdapter.getReadableDatabase();
             userDBAdapter.onOpen();
-            long id_=userDBAdapter.getBookingCount();
+            count++;
+//            long id_=userDBAdapter.getBookingCount();
             userDBAdapter.close();
 
-            String bookID = "BK"+id_/100+id_/10+id_%10;
+            String bookID = "BK"+count/100+count/10+count%10;
 
             Booking booking =new Booking(bookID,userID,getIntent().getStringExtra("nama"),getIntent().getStringExtra("harga"),getIntent().getStringExtra("fasilitas"),currentDateString,getIntent().getStringExtra("deskripsi"),getIntent().getStringExtra("latitude"),getIntent().getStringExtra("longitude"),getIntent().getStringExtra("gambar"));
 
@@ -148,7 +160,11 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
             userDBAdapter.insertBookingTransaction(booking);
             userDBAdapter.close();
             BookingStorage.bookings.add(booking);
-//            Toast.makeText(this," "+userDBAdapter.allBookings(),Toast.LENGTH_SHORT).show();
+            SharedPreferences appPref = getSharedPreferences("applicationPref",MODE_PRIVATE);
+            SharedPreferences.Editor editor = appPref.edit();
+            editor.putLong("countID",count);
+            editor.commit();
+
             Toast.makeText(this, "Booking Success", Toast.LENGTH_SHORT).show();
         }
 

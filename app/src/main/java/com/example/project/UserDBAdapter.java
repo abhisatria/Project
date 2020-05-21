@@ -20,6 +20,7 @@ import java.util.List;
 
 public class UserDBAdapter extends SQLiteOpenHelper {
 
+
     private static final int DATABASE_VERSION=1;
     private static final String DATABASE_NAME = "kostDB.db";
     private static final String TABLE_USERS = "users";
@@ -43,10 +44,6 @@ public class UserDBAdapter extends SQLiteOpenHelper {
     private static final String COLUMN_LATITUDE = "kosLatitude";
     private static final String COLUMN_DATE = "DATE";
     private static final String COLUMN_IMAGE = "image";
-
-
-
-
 
 
 
@@ -126,6 +123,7 @@ public class UserDBAdapter extends SQLiteOpenHelper {
         contentValues.put(COLUMN_IMAGE,booking.getGambarKos());
 
         db.insert(TABLE_BOOKS,null,contentValues);
+
     }
     public long getLastCount(){
         String query = "SELECT * FROM "+ TABLE_BOOKS;

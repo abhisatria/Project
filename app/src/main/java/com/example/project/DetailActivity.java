@@ -41,7 +41,16 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
         SharedPreferences appPref = getSharedPreferences("applicationPref",MODE_PRIVATE);
         count = appPref.getLong("countID",0);
 
+        BookingStorage.bookings.clear();
 
+        UserDBAdapter userDBAdapter = new UserDBAdapter(this,null,null,1);
+        userDBAdapter.onOpen();
+        SQLiteDatabase obj = userDBAdapter.getReadableDatabase();
+        if(obj!=null)
+        {
+            BookingStorage.bookings.addAll(userDBAdapter.allBookings());
+        }
+        userDBAdapter.close();
         imgKos = findViewById(R.id.gambarKos);
         tvName = findViewById(R.id.tvNameKos);
         tvFacility = findViewById(R.id.tvFacilityKos);
@@ -97,18 +106,18 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
         String userID = UserLoginStorage.userID;
 
 
-        for(int i=0;i<BookingStorage.countItem;i++)
+        for(int i=0;i<BookingStorage.bookings.size();i++)
         {
             if(UserLoginStorage.userID.equals(BookingStorage.bookings.get(i).getUserID() ))
             {
                if(getIntent().getIntExtra("id",0)==(BoardingStorage.boardings.get(i).getId()))
                {
                    Intent intent = new Intent(this,ListActivity.class);
-                   Toast.makeText(this, "Booking Failed. You already book this kos", Toast.LENGTH_SHORT).show();
+                   Toast.makeText(this, "Booking Failed. You already book this kos"+BoardingStorage.boardings.get(i).getId(), Toast.LENGTH_SHORT).show();
                    break;
                }
             }
-            if(i==BookingStorage.countItem-1)
+            if(i==BookingStorage.bookings.size()-1)
             {
                 String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
 //                BookingStorage.countItem++;
@@ -142,7 +151,7 @@ public class DetailActivity extends AppCompatActivity implements DatePickerDialo
                 break;
             }
         }
-        if(BookingStorage.countItem==0)
+        if(BookingStorage.bookings.size()==0)
         {
             String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
             UserDBAdapter userDBAdapter = new UserDBAdapter(getApplicationContext(),null,null,1);

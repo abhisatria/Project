@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.example.project.Adapter.KostListAdapter;
 import com.example.project.Model.Boarding;
 import com.example.project.Storage.BoardingStorage;
+import com.example.project.Storage.BookingStorage;
 import com.example.project.Storage.UserLoginStorage;
 
 import org.json.JSONArray;
@@ -145,6 +147,14 @@ public class ListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
+        BookingStorage.bookings.clear();
+
+        UserDBAdapter userDBAdapter = new UserDBAdapter(this,null,null,1);
+        SQLiteDatabase obj = userDBAdapter.getReadableDatabase();
+        if(obj!=null)
+        {
+            BookingStorage.bookings.addAll(userDBAdapter.allBookings());
+        }
 
         new AccessJSONServiceTask().execute("https://raw.githubusercontent.com/dnzrx/SLC-REPO/master/MOBI6006/E202-MOBI6006-KR01-00.json");
 //        Intent intent = getIntent();

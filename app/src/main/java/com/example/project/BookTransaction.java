@@ -37,8 +37,8 @@ public class BookTransaction extends AppCompatActivity {
         {
             BookingStorage.bookings.addAll(userDBAdapter.allBookings());
         }
-        BookingStorage.countItem =  Integer.parseInt(String.valueOf(userDBAdapter.getBookingCount()));
-        if(BookingStorage.countItem!=0)
+//        BookingStorage.countItem =  Integer.parseInt(String.valueOf(userDBAdapter.getBookingCount()));
+        if(BookingStorage.bookings.size()!=0)
         {
             tvEmpty.setVisibility(View.GONE);
         }

@@ -73,6 +73,13 @@ public class BookingTransactionAdapter extends RecyclerView.Adapter<BookingTrans
                         {
                             Intent intent = new Intent(v.getContext(), ListActivity.class);
                             Toast.makeText(v.getContext(), "Your booking has been cancelled", Toast.LENGTH_SHORT).show();
+                            BookingStorage.bookings.clear();
+
+                            SQLiteDatabase obj = dbAdapter.getReadableDatabase();
+                            if(obj!=null)
+                            {
+                                BookingStorage.bookings.addAll(dbAdapter.allBookings());
+                            }
                             v.getContext().startActivity(intent);
                         }
                         dbAdapter.close();
